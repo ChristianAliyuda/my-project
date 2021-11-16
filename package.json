@@ -8,5 +8,8 @@
     "start": "node server.js"
   },
   "author": "kamran",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
