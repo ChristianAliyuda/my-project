@@ -1,0 +1,23 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+    commands:
+      - npm install -g typescript
+      - npm install
+  pre_build:
+    commands:
+      - echo Installing source NPM dependencies...
+  build:
+    commands:
+      - echo Build started on `date`
+      - tsc
+    post_build:
+      commands:
+        - echo Build completed on `date`  
+artifacts:
+  type: zip
+  files:
+    - package.json
+    - package-lock.json
