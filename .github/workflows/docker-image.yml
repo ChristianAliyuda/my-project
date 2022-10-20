@@ -1,48 +1,15 @@
-name: Release Drafter
+name: Keep the versions up-to-date
 
 on:
-  pull_request:
-    branches:
-      - main
-      - dev
-    # Only following types are handled by the action, but one can default to all as well
-    types: [opened, reopened, synchronize]
-
-
-permissions:
-  contents: read
+  release:
+    types: [published]
 
 jobs:
-  update_release_draft:
-    permissions:
-      contents: write
-      pull-requests: write
-    runs-on: ubuntu-latest
+  actions-tagger:
+    runs-on: windows-latest
     steps:
-      # (Optional) GitHub Enterprise requires GHE_HOST variable set
-      #- name: Set GHE_HOST
-      #  run: |
-      #    echo "GHE_HOST=${GITHUB_SERVER_URL##https:\/\/}" >> $GITHUB_ENV
-
-      - name: semantic_version
-        id: semantic_version
-        run: |
-          if [$BASE_REF == 'dev']
-          then
-              echo "::set-output name=value::alpha1"
-          else
-              echo "::set-output name=value::false"
-          fi
-        env:
-          BASE_REF: ${{ github.base_ref }}
-          HEAD_REF: ${{ github.head_ref }}
-      - uses: release-drafter/release-drafter@v5
+      - uses: Actions-R-Us/actions-tagger@95c51c646e75db5c6b7d447e3087bcee58677341
         with:
-          # Override the default name
-          # head_ref = source branch
-          # base_ref = target branch
-          name: v$RESOLVED_VERSION${{ steps.semantic_version.outputs.value }}
-          tag: v$RESOLVED_VERSION${{ steps.semantic_version.outputs.value }}
-          version-template: '$MAJOR.$MINOR'
+          publish_latest: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: '${{secrets.GITHUB_TOKEN}}'
