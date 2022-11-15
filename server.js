@@ -1,5 +1,5 @@
 const express = require('express')
-const app = expre()
+const app = express()
 
 app.get('/', (req, res) => res.send('hope doing well'))
 
